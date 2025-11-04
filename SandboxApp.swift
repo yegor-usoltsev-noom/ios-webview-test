@@ -12,7 +12,7 @@ struct SandboxApp: App {
 
 struct ContentView: View {
     var body: some View {
-        WebView(url: URL(string: "https://www.google.com")!)
+        WebView(url: URL(string: "https://yegor-usoltsev-noom.github.io/ios-webview-test/")!)
     }
 }
 
