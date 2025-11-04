@@ -67,7 +67,20 @@
         </div>
       </li>
       <li>
-        <div onclick="window.open('https://google.com')">window.open()</div>
+        <div onclick="window.open('https://google.com', '_blank')">
+          window.open()
+        </div>
+      </li>
+    </ul>
+
+    <h2>Native Integration</h2>
+    <ul>
+      <li>
+        <div
+          onclick="try { window.webkit.messageHandlers.openExternalBrowser.postMessage('https://google.com'); } catch(e) { window.open('https://google.com', '_blank'); }"
+        >
+          Open External Browser
+        </div>
       </li>
     </ul>
   </body>
