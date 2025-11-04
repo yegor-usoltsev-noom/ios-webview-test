@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Link Examples</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 600px;
+        margin: 0 auto;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        margin: 8px 0;
+        padding: 8px;
+        background: #f5f5f5;
+        border-radius: 4px;
+      }
+      a {
+        color: #0066cc;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      div[onclick] {
+        cursor: pointer;
+        color: #0066cc;
+      }
+      div[onclick]:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Anchor Links</h2>
+    <ul>
+      <li><a href="https://google.com">No target</a></li>
+      <li><a href="https://google.com" target="_blank">target="_blank"</a></li>
+      <li><a href="https://google.com" target="_self">target="_self"</a></li>
+      <li>
+        <a href="https://google.com" target="_parent">target="_parent"</a>
+      </li>
+      <li><a href="https://google.com" target="_top">target="_top"</a></li>
+    </ul>
+
+    <h2>JavaScript Navigation</h2>
+    <ul>
+      <li>
+        <div onclick="window.location.href='https://google.com'">
+          location.href
+        </div>
+      </li>
+      <li>
+        <div onclick="window.location.assign('https://google.com')">
+          location.assign()
+        </div>
+      </li>
+      <li>
+        <div onclick="window.location.replace('https://google.com')">
+          location.replace()
+        </div>
+      </li>
+      <li>
+        <div onclick="window.open('https://google.com')">window.open()</div>
+      </li>
+    </ul>
+  </body>
+</html>
