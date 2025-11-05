@@ -21,67 +21,111 @@
         background: #f5f5f5;
         border-radius: 4px;
       }
-      a {
+      a,
+      .link {
         color: #0066cc;
         text-decoration: none;
-      }
-      a:hover {
-        text-decoration: underline;
-      }
-      div[onclick] {
         cursor: pointer;
-        color: #0066cc;
       }
-      div[onclick]:hover {
+      a:hover,
+      .link:hover {
         text-decoration: underline;
+      }
+      .controls {
+        margin-bottom: 20px;
+        padding: 12px;
+        background: #e8f4f8;
+        border-radius: 4px;
       }
     </style>
   </head>
   <body>
+    <div class="controls">
+      <label>
+        <input type="checkbox" id="paramCheckbox" />
+        Add <code>?openInExternalApp=true</code> to all links
+      </label>
+    </div>
+
     <h2>Anchor Links</h2>
     <ul>
-      <li><a href="https://google.com">No target</a></li>
-      <li><a href="https://google.com" target="_blank">target="_blank"</a></li>
-      <li><a href="https://google.com" target="_self">target="_self"</a></li>
-      <li>
-        <a href="https://google.com" target="_parent">target="_parent"</a>
-      </li>
-      <li><a href="https://google.com" target="_top">target="_top"</a></li>
+      <li><a class="link-target">No target</a></li>
+      <li><a class="link-target" target="_blank">target="_blank"</a></li>
+      <li><a class="link-target" target="_self">target="_self"</a></li>
+      <li><a class="link-target" target="_parent">target="_parent"</a></li>
+      <li><a class="link-target" target="_top">target="_top"</a></li>
     </ul>
 
     <h2>JavaScript Navigation</h2>
     <ul>
+      <li><div class="link" onclick="navigate('href')">location.href</div></li>
       <li>
-        <div onclick="window.location.href='https://google.com'">
-          location.href
-        </div>
+        <div class="link" onclick="navigate('assign')">location.assign()</div>
       </li>
       <li>
-        <div onclick="window.location.assign('https://google.com')">
-          location.assign()
-        </div>
+        <div class="link" onclick="navigate('replace')">location.replace()</div>
       </li>
       <li>
-        <div onclick="window.location.replace('https://google.com')">
-          location.replace()
-        </div>
-      </li>
-      <li>
-        <div onclick="window.open('https://google.com', '_blank')">
-          window.open()
-        </div>
+        <div class="link" onclick="navigate('open')">window.open()</div>
       </li>
     </ul>
 
     <h2>Native Integration</h2>
     <ul>
       <li>
-        <div
-          onclick="try { window.webkit.messageHandlers.openExternalBrowser.postMessage('https://google.com'); } catch(e) { window.open('https://google.com', '_blank'); }"
-        >
-          Open External Browser
-        </div>
+        <div class="link" onclick="openExternal()">Open External Browser</div>
       </li>
     </ul>
+
+    <script>
+      const BASE = "https://google.com";
+      const KEY = "externalAppFlag";
+
+      const checkbox = document.getElementById("paramCheckbox");
+
+      function url() {
+        return checkbox.checked ? BASE + "?openInExternalApp=true" : BASE;
+      }
+
+      function updateLinks() {
+        document
+          .querySelectorAll(".link-target")
+          .forEach((a) => (a.href = url()));
+      }
+
+      function navigate(method) {
+        const targetUrl = url();
+        if (method === "href") window.location.href = targetUrl;
+        else if (method === "assign") window.location.assign(targetUrl);
+        else if (method === "replace") window.location.replace(targetUrl);
+        else if (method === "open") window.open(targetUrl, "_blank");
+      }
+
+      function openExternal() {
+        const targetUrl = url();
+        try {
+          window.webkit.messageHandlers.openExternalBrowser.postMessage(
+            targetUrl
+          );
+        } catch (e) {
+          window.open(targetUrl, "_blank");
+        }
+      }
+
+      checkbox.checked = localStorage.getItem(KEY) === "true";
+      updateLinks();
+
+      checkbox.onchange = () => {
+        localStorage.setItem(KEY, checkbox.checked);
+        updateLinks();
+      };
+
+      window.onstorage = (e) => {
+        if (e.key === KEY) {
+          checkbox.checked = e.newValue === "true";
+          updateLinks();
+        }
+      };
+    </script>
   </body>
 </html>
